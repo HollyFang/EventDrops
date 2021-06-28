@@ -31,7 +31,7 @@ export default ({
         const {
             drops,
             zoom: zoomConfig,
-            drop: { onClick, onMouseOut, onMouseOver },
+            drop: { onClick, onMouseOut, onMouseOver, shapeFunc },
             metaballs,
             label: { width: labelWidth },
             line: { height: lineHeight },
@@ -70,12 +70,15 @@ export default ({
             svg.call(addMetaballsDefs(config));
         }
 
-        svg.merge(root).attr(
-            'height',
-            d => (d.length + 1) * lineHeight + margin.top + margin.bottom
-        );
+        svg
+            .merge(root)
+            .attr(
+                'height',
+                d => (d.length + 1) * lineHeight + margin.top + margin.bottom
+            );
 
-        svg.append('g')
+        svg
+            .append('g')
             .classed('viewport', true)
             .attr('transform', `translate(${margin.left},${margin.top})`)
             .call(draw(config, xScale));
@@ -96,9 +99,7 @@ export default ({
     };
 
     const draw = (config, scale) => selection => {
-        const {
-            drop: { date: dropDate },
-        } = config;
+        const { drop: { date: dropDate } } = config;
 
         const dateBounds = scale.domain().map(d => new Date(d));
         const filteredData = selection.data().map(dataSet => {

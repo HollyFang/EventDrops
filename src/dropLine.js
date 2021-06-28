@@ -40,9 +40,9 @@ export default (config, xScale) => selection => {
         .attr('height', config.line.height)
         .attr('fill', 'transparent');
 
-    if (metaballs) {
-        drops.style('filter', 'url(#metaballs)');
-    }
+    // if (metaballs) {
+    //     drops.style('filter', 'url(#metaballs)');
+    // }
 
     g
         .append('text')

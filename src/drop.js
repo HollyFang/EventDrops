@@ -9,6 +9,7 @@ export default (config, xScale) => selection => {
             color: dropColor,
             radius: dropRadius,
             date: dropDate,
+            shapeFunc: shapeFunc,
             onClick,
             onMouseOver,
             onMouseOut,
@@ -19,18 +20,31 @@ export default (config, xScale) => selection => {
         .selectAll('.drop')
         .data(filterOverlappingDrop(xScale, dropDate));
 
-    drops
-        .enter()
-        .append('circle')
-        .classed('drop', true)
-        .on('click', onClick)
-        .on('mouseover', onMouseOver)
-        .on('mouseout', onMouseOut)
-        .merge(drops)
-        .attr('r', dropRadius)
-        .attr('fill', dropColor)
-        .attr('cx', d => xScale(dropDate(d)));
-
+    if (shapeFunc)
+        drops
+            .enter()
+            .append('path')
+            .classed('drop', true)
+            .on('click', onClick)
+            .on('mouseover', onMouseOver)
+            .on('mouseout', onMouseOut)
+            .merge(drops)
+            .attr('d', d => shapeFunc(xScale, d, dropRadius))
+            .attr('fill', dropColor)
+            .attr('stroke', '#000')
+            .attr('stroke-width', 1);
+    else
+        drops
+            .enter()
+            .append('circle')
+            .classed('drop', true)
+            .on('click', onClick)
+            .on('mouseover', onMouseOver)
+            .on('mouseout', onMouseOut)
+            .merge(drops)
+            .attr('r', dropRadius)
+            .attr('fill', dropColor)
+            .attr('cx', d => xScale(dropDate(d)));
     drops
         .exit()
         .on('click', null)
